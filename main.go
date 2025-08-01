@@ -167,7 +167,7 @@ func verifyOTP(w http.ResponseWriter, r *http.Request) {
 
 // MAIN FUNCTION
 func main() {
-	connectMongoDB() // ✅ Call this before anything else
+	connectMongoDB() // Call this before anything else
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000" // fallback for local development
@@ -177,8 +177,8 @@ func main() {
 	http.HandleFunc("/V1/request-otp", verifyPhoneNumberhandler) // Same handler for request
 	http.HandleFunc("/V1/verify-otp", verifyOTP)
 
-	fmt.Println("🚀 Server running at http://localhost:8000")
-	if err := http.ListenAndServe(":8000", nil); err != nil {
-		log.Fatal("❌ Error starting server:", err)
+	fmt.Printf("Server running on port: %s\n", port) // sets a default port that allows render connection
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatalf("❌Server failed to start: %v", err)
 	}
 }
