@@ -10,6 +10,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -162,10 +163,15 @@ func verifyOTP(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// MAIN FUNCTION
+// Port Binding to ping render connection
+
 // MAIN FUNCTION
 func main() {
 	connectMongoDB() // ✅ Call this before anything else
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000" // fallback for local development
+	}
 
 	http.HandleFunc("/V1/verify-phone_number", verifyPhoneNumberhandler)
 	http.HandleFunc("/V1/request-otp", verifyPhoneNumberhandler) // Same handler for request
